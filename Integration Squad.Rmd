@@ -1,0 +1,29 @@
+
+#Load the required library 
+```{r}
+#Install the required package
+
+library(googlesheets4)
+
+x <- read_sheet('https://docs.google.com/spreadsheets/d/1TQNlBlvdm9CSpdcaEJVbrbl-5gISZqrmJWMtAvGW_W8/edit#gid=0')
+
+```
+```{r}
+library(tidyr)
+library(dplyr)
+base=x %>% 
+    mutate(Country = strsplit(as.character(Country), ",")) %>% 
+    unnest(Country) %>% 
+    mutate(Rol = strsplit(as.character(Rol), ","))%>% 
+    unnest(Rol)
+```
+
+```{r}
+d=range_write(
+'https://docs.google.com/spreadsheets/d/1TQNlBlvdm9CSpdcaEJVbrbl-5gISZqrmJWMtAvGW_W8/edit#gid=0',
+base,
+sheet = "Results"
+)
+
+```
+
